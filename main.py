@@ -30,11 +30,13 @@ def main():
             file_name = store_urls(s, count)
             with open(file_name, "r", encoding="utf-8") as url_file:
                 urls = url_file.readlines()
-            for url in urls:
+            for i, url in enumerate(urls):
                 emails = get_emails(url, ua.random)
-                for email in emails:
-                    if email not in unique_emails:
-                        unique_emails.append(email)
+                print(f'Url#{i + 1} out of {len(urls)} finished!')
+                if emails:
+                    for email in emails:
+                        if email not in unique_emails:
+                            unique_emails.append(email)
             emails_to_file(s, unique_emails)
 
     except Exception as e:
@@ -44,12 +46,10 @@ def main():
 if __name__ == "__main__":
     print("Starting the script (ctrl+c to exit)")
     start_time = time.perf_counter()
-    
     try:
         main()
     except KeyboardInterrupt:
-        print("Exiting!")
+        print('Exiting!')
         sys.exit()
-        
     end_time = time.perf_counter()
     print("Elapse Time: ", int(end_time - start_time), "seconds")
