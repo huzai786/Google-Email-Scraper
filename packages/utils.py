@@ -1,5 +1,6 @@
 import os
 import re
+import sys
 import requests
 from googlesearch import search
 from typing import Generator
@@ -9,13 +10,12 @@ def store_urls(search_term: str, total_urls: int) -> str:
     try:
         file_name = re.sub("\s", "_", search_term)
         fpath = os.path.join(os.getcwd(), "files", f"{file_name}_urls.txt")
-        with open(fpath, "w") as fn:
-            urls = search(f"{search_term}", num_results=total_urls)
-            print("getting urls....")
-            if urls:
-                for url in urls:
-                    fn.write(url)
-                    fn.write("\n")
+        print("getting urls....")
+        urls = search(f"{search_term}", num_results=total_urls)
+        with open(fpath, "w", encoding='utf-8') as fn:
+            for url in urls:
+                fn.write(url)
+                fn.write("\n")
         print(f"{file_name}_url.txt created!")
         return fpath
 
@@ -25,28 +25,41 @@ def store_urls(search_term: str, total_urls: int) -> str:
 
 
 def extract_emails(html_text: str):
-    get_first_group = lambda y: list(map(lambda x: x[0], y))  # Function to get first group item
-    pattern = r'(?:\.?)([\w\-_+#~!$&\'\.]+(?<!\.)(@|[ ]?\(?[ ]?(at|AT)[ ]?\)?[ ]?)(?<!\.)[\w]+[\w\-\.]*\.[a-zA-Z-]{2,3})(?:[^\w])'
+    pattern = r'[\w.+-]+@[\w-]+\.[\w.-]+'
     matches = re.findall(pattern, html_text)
-    return get_first_group(matches)
+    return matches
 
 
 
-def get_emails(url: str, user_agent):
-    headers = {"User-Agent": f"{user_agent}"}
-
+def get_emails(url: str, user_agent, session):
+    headers = {
+    "User-Agent":f"{user_agent}",
+    }
+    emails = []
     try:
-        res = requests.get(url, headers=headers)
+        res = requests.get(url, headers=headers, timeout=2.50)
         if res.status_code == 200:
             html_text = str(res.text)
             emails = extract_emails(html_text)
-            return emails
-            
+            return emails, 'Successful'
+        
         else:
-            pass
+            return [], 'Unsuccessful'
+        
+    except KeyboardInterrupt:
+        sys.exit()
+    
+    except ConnectionResetError as e:
+        return [], f'Unsuccessful Error: {e}'
+    
+    except requests.ReadTimeout as e:
+        return [], f'Unsuccessful Error: {e}'
+    
     except requests.RequestException as e:
-        print(e)
-        pass
+        return [], f'Unsuccessful Error: {e}'
+    
+    except Exception as e:
+        return [], f'Unsuccessful Error: {e}'
 
 
 def take_input():
@@ -62,6 +75,7 @@ def take_input():
             print("Please enter a number")
             continue
     return search_list, count
+
 
 
 def emails_to_file(search_term, emails):
