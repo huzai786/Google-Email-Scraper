@@ -1,11 +1,9 @@
+"""main.py scrapes emails from google search results"""
 import sys
 import time
-import cProfile
-
 try:
-    from requests_html import HTMLSession
     from fake_useragent import UserAgent
-    from humanfriendly import format_timespan
+    from datetime import timedelta
     from packages.utils import (
         emails_to_file,
         take_input,
@@ -23,18 +21,19 @@ except ModuleNotFoundError as e:
 
 
 def main():
-    searches_items, count = take_input()
+    searches_items, count, delay = take_input()
     print(f"Found {len(searches_items)} search terms!, {searches_items}")
     ua = UserAgent()
-    session = HTMLSession()
-    for s in searches_items:
+    for i, s in enumerate(searches_items):
         unique_emails = []
+        if i != 0:
+            tim.sleep(delay)
         file_name = store_urls(s, count)
         with open(file_name, "r", encoding="utf-8") as url_file:
             for i, url in enumerate(url_file):
                 url = url.strip()
                 if not url.endswith('.pdf'):
-                    emails, msg = get_emails(url.strip(), ua.random, session)
+                    emails, msg = get_emails(url.strip(), ua.random)
                     print(f'url number {i + 1} Status: {msg}')
                     if emails:
                         for email in emails:
@@ -43,7 +42,10 @@ def main():
                                     unique_emails.append(email)
                     else:
                         continue
+        
         emails_to_file(s, unique_emails)
+        
+        
 
 
 
@@ -62,5 +64,6 @@ if __name__ == "__main__":
     end_time = time.perf_counter()
     
     time_to_run = int((end_time - start_time))
-    print(f"Elapse Time: {time_to_run} seconds")
+    time_string = "f{:0>8}".format(str(timedelta(seconds=time_to_run))) 
+    print(f"Elapse Time: {time_string} seconds")
     
