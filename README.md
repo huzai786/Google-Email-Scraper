@@ -5,10 +5,10 @@
 
 ## Application Format
 user will be prompted to enter following:
- * keyword: query to search for (to pass multiple keywords, seperate them with comma ,)
- * Url_Count: total number of url to scrape
- * keyword_delay: Delay between each keyword (if multiple keyword supplied)
- * request_delay: Delay between each request
+ * <b>keyword</b>: query to search for (to pass multiple keywords, seperate them with comma ,)
+ * <b>Url_Count</b>: total number of url to scrape
+ * <b>keyword_delay</b>: Delay between each keyword (if multiple keyword supplied)
+ * <b>request_delay</b>: Delay between each request
 
 
 ## Output
