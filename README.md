@@ -1,4 +1,4 @@
-<b><i> Google Email Scraper </i></b>
+<h1><b style="color:blue;"><i> Google Email Scraper </i></b></h1>
 
 #### A command line scraper that scrapes emails from the results return by google search
 ---
