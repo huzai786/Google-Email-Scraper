@@ -1,6 +1,6 @@
 <b><i> Google Email Scraper </i></b>
 
-### A command line scraper that scrapes emails from the results return by google search
+#### A command line scraper that scrapes emails from the results return by google search
 ---
 
 ## Application Format
