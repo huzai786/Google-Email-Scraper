@@ -80,6 +80,8 @@ def take_input():
     if len(search_list) > 1:
         print("Delay between each keyword search (seconds): ")
         delay = int(input("> "))
+    print('Delay between each request: ')
+    req_delay = int(input('> '))
     while True:
         try:
             count = int(input("Enter the total number of urls to scrape: "))
@@ -87,7 +89,7 @@ def take_input():
         except ValueError:
             print("Please enter a number")
             continue
-    return search_list, count, delay
+    return search_list, count, delay, req_delay
 
 
 def emails_to_file(search_term: str, emails: list) -> None:

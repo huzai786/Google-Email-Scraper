@@ -14,7 +14,7 @@ except ModuleNotFoundError as e:
 
 
 def main():
-    searches_items, count, delay = take_input()
+    searches_items, count, delay, req_delay = take_input()
     print(f"Found {len(searches_items)} search terms!, {searches_items}")
     ua = UserAgent()
     for i, s in enumerate(searches_items):
@@ -26,6 +26,8 @@ def main():
             for i, url in enumerate(url_file):
                 url = url.strip()
                 if not url.endswith(".pdf"):
+                    time.sleep(req_delay)
+                    print(f'{req_delay}s break')
                     emails, msg = get_emails(url.strip(), ua.random)
                     if msg == "break":
                         emails_to_file(s, unique_emails)
