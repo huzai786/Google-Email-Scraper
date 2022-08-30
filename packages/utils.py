@@ -81,7 +81,7 @@ def take_input():
         print("Delay between each keyword search (seconds): ")
         delay = int(input("> "))
     print('Delay between each request: ')
-    req_delay = int(input('> '))
+    req_delay = float(input('> '))
     while True:
         try:
             count = int(input("Enter the total number of urls to scrape: "))

@@ -27,7 +27,6 @@ def main():
                 url = url.strip()
                 if not url.endswith(".pdf"):
                     time.sleep(req_delay)
-                    print(f'{req_delay}s break')
                     emails, msg = get_emails(url.strip(), ua.random)
                     if msg == "break":
                         emails_to_file(s, unique_emails)
